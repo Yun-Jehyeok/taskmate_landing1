@@ -6,7 +6,6 @@ function App() {
     const [status, setStatus] = useState("");
     const [isSubmitting, setIsSubmitting] = useState(false);
     const [feedbackType, setFeedbackType] = useState<"free" | "premium">("free");
-    const [agree, setAgree] = useState(false);
     const [formData, setFormData] = useState({
         github: "",
         content: "",
@@ -46,7 +45,6 @@ function App() {
             if (response.ok) {
                 setStatus("success");
                 setFormData({ github: "", content: "", email: "" });
-                setAgree(false);
             } else {
                 setStatus("error");
             }
