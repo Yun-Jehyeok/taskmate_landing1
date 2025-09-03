@@ -21,7 +21,7 @@ function App() {
         }));
     };
 
-    const isFormValid = formData.github.trim() !== "" && formData.content.trim() !== "" && formData.email.trim() !== "" && agree;
+    const isFormValid = formData.github.trim() !== "" && formData.content.trim() !== "" && formData.email.trim() !== "";
 
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement> | React.MouseEvent<HTMLButtonElement>) => {
         e.preventDefault();
@@ -125,6 +125,40 @@ function App() {
                             />
                         </div>
                     </form>
+
+                    {status === "success" && (
+                        <div className="mt-6 p-4 bg-green-50 border border-green-200 rounded-lg">
+                            <div className="flex items-center">
+                                <svg className="w-5 h-5 text-green-400 mr-2" fill="currentColor" viewBox="0 0 20 20">
+                                    <path
+                                        fillRule="evenodd"
+                                        d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
+                                        clipRule="evenodd"
+                                    />
+                                </svg>
+                                <div>
+                                    <p className="text-sm text-green-800">제출 완료! 제출해주신 이메일로 최대한 빠른 피드백을 드릴게요!</p>
+                                    {feedbackType === "premium" && <p className="text-xs text-green-700 mt-1">💡 시범운영 중으로 실제 결제는 진행되지 않습니다.</p>}
+                                </div>
+                            </div>
+                        </div>
+                    )}
+                    {status === "error" && (
+                        <div className="mt-6 p-4 bg-red-50 border border-red-200 rounded-lg">
+                            <div className="flex items-center">
+                                <svg className="w-5 h-5 text-red-400 mr-2" fill="currentColor" viewBox="0 0 20 20">
+                                    <path
+                                        fillRule="evenodd"
+                                        d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
+                                        clipRule="evenodd"
+                                    />
+                                </svg>
+                                <div>
+                                    <p className="text-sm text-red-800">제출 실패! 다시 시도해주세요.</p>
+                                </div>
+                            </div>
+                        </div>
+                    )}
                 </div>
 
                 {/* Pricing Selection */}
