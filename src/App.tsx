@@ -10,9 +10,10 @@ function App() {
         github: "",
         content: "",
         email: "",
+        source: "",
     });
 
-    const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
         const { name, value } = e.target;
         setFormData((prev) => ({
             ...prev,
@@ -20,7 +21,7 @@ function App() {
         }));
     };
 
-    const isFormValid = formData.github.trim() !== "" && formData.content.trim() !== "" && formData.email.trim() !== "";
+    const isFormValid = formData.github.trim() !== "" && formData.content.trim() !== "" && formData.email.trim() !== "" && formData.source !== "";
 
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement> | React.MouseEvent<HTMLButtonElement>) => {
         e.preventDefault();
@@ -31,6 +32,7 @@ function App() {
         data.append("github", formData.github);
         data.append("content", formData.content);
         data.append("email", formData.email);
+        data.append("source", formData.source);
         data.append("feedbackType", feedbackType);
 
         try {
@@ -44,7 +46,7 @@ function App() {
 
             if (response.ok) {
                 setStatus("success");
-                setFormData({ github: "", content: "", email: "" });
+                setFormData({ github: "", content: "", email: "", source: "" });
             } else {
                 setStatus("error");
             }
@@ -122,6 +124,35 @@ function App() {
                                 className="block w-full px-3 py-3 border border-gray-300 rounded-lg outline-none focus:ring-1 focus:ring-blue-500 focus:border-blue-500 transition duration-200 ease-in-out"
                             />
                         </div>
+
+                        {/* Source Select */}
+                        <div className="space-y-2">
+                            <label htmlFor="source" className="block text-sm font-medium text-gray-700">
+                                방문 경로
+                            </label>
+                            <div className="relative">
+                                <select
+                                    id="source"
+                                    name="source"
+                                    value={formData.source}
+                                    onChange={handleInputChange}
+                                    required
+                                    className="block w-full px-3 py-3 pr-10 border border-gray-300 rounded-lg outline-none focus:ring-1 focus:ring-blue-500 focus:border-blue-500 transition duration-200 ease-in-out appearance-none bg-white cursor-pointer"
+                                >
+                                    <option value="">방문 경로를 선택해주세요</option>
+                                    <option value="sns">SNS</option>
+                                    <option value="openchat">오픈채팅</option>
+                                    <option value="blog">블로그</option>
+                                    <option value="cafe">카페</option>
+                                    <option value="other">기타</option>
+                                </select>
+                                <div className="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none">
+                                    <svg className="h-5 w-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                                    </svg>
+                                </div>
+                            </div>
+                        </div>
                     </form>
 
                     {status === "success" && (
@@ -169,7 +200,10 @@ function App() {
                             className={`p-3 rounded-lg border-2 ${feedbackType === "free" ? "border-blue-500 bg-blue-50" : "border-gray-200 bg-gray-50"}`}
                         >
                             <div className="flex items-center justify-between">
-                                <h3 className="font-semibold text-gray-800 text-sm">무료 피드백</h3>
+                                <div className="text-left">
+                                    <h3 className="font-semibold text-gray-800 text-sm">무료 피드백</h3>
+                                    <p className="text-xs text-gray-600">핵심 요약 피드백</p>
+                                </div>
                                 <span className="text-lg font-bold text-green-600">₩0</span>
                             </div>
                         </button>
@@ -180,7 +214,10 @@ function App() {
                             className={`p-3 rounded-lg border-2 ${feedbackType === "premium" ? "border-purple-500 bg-purple-50" : "border-gray-200 bg-gray-50"}`}
                         >
                             <div className="flex items-center justify-between">
-                                <h3 className="font-semibold text-gray-800 text-sm">일반 피드백</h3>
+                                <div className="text-left">
+                                    <h3 className="font-semibold text-gray-800 text-sm">일반 피드백</h3>
+                                    <p className="text-xs text-gray-600">상세 전체 피드백</p>
+                                </div>
                                 <span className="text-lg font-bold text-purple-600">₩4,900</span>
                             </div>
                         </button>
