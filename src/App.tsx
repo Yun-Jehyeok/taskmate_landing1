@@ -65,8 +65,8 @@ function App() {
                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
                         </svg>
                     </div>
-                    <h1 className="text-3xl font-bold text-gray-800 mb-2">리뷰 요청하기</h1>
-                    <p className="text-gray-600">AI에게 코드 리뷰를 받아보세요!</p>
+                    <h1 className="text-3xl font-bold text-gray-800 mb-2">AI 피드백 요청하기</h1>
+                    <p className="text-gray-600">AI에게 코드 피드백을 받아보세요!</p>
                 </div>
 
                 {/* Form */}
@@ -92,14 +92,14 @@ function App() {
                         {/* Content Textarea */}
                         <div className="space-y-2">
                             <label htmlFor="content" className="block text-sm font-medium text-gray-700">
-                                리뷰 받고 싶은 내용
+                                피드백 받고 싶은 내용
                             </label>
                             <textarea
                                 id="content"
                                 name="content"
                                 value={formData.content}
                                 onChange={handleInputChange}
-                                placeholder="어떤 부분에 대한 리뷰를 받고 싶으신가요?"
+                                placeholder="어떤 부분에 대한 리뷰를 받고 싶으신가요? (예: 코드 품질, 폴더 구조, 아키텍처, 성능 최적화, 보안 등 구체적으로 설명해주세요)"
                                 required
                                 rows={4}
                                 className="block w-full px-3 py-3 border border-gray-300 rounded-lg outline-none focus:ring-1 focus:ring-blue-500 focus:border-blue-500 transition duration-200 ease-in-out resize-none"
