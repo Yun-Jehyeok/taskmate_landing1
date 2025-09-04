@@ -8,12 +8,38 @@ function App() {
     const feedbackType = "free";
     // const [feedbackType, setFeedbackType] = useState<"free" | "premium">("free");
     const [showExampleModal, setShowExampleModal] = useState(false);
+    const [showTrustModal, setShowTrustModal] = useState(false);
+    const [trustScore, setTrustScore] = useState<number | null>(null);
+    const [showThanksModal, setShowThanksModal] = useState(false);
+    const [lastSubmittedEmail, setLastSubmittedEmail] = useState<string>("");
     const [formData, setFormData] = useState({
         github: "",
         content: "",
         email: "",
         source: "",
     });
+
+    const handleTrustSelect = async (score: number) => {
+        setTrustScore(score);
+        setShowTrustModal(false);
+        setShowThanksModal(true);
+
+        try {
+            const trustData = new FormData();
+            trustData.append("email", lastSubmittedEmail || "");
+            trustData.append("trustScore", String(score));
+            trustData.append("type", "trust_survey");
+            trustData.append("github", formData.github || "");
+
+            await fetch(FORMSPREE_URL, {
+                method: "POST",
+                body: trustData,
+                headers: { Accept: "application/json" },
+            });
+        } catch (err) {
+            // no-op: 설문 전송 실패는 UI에 표시하지 않음
+        }
+    };
 
     const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
         const { name, value } = e.target;
@@ -48,7 +74,9 @@ function App() {
 
             if (response.ok) {
                 setStatus("success");
+                setLastSubmittedEmail(formData.email);
                 setFormData({ github: "", content: "", email: "", source: "" });
+                setShowTrustModal(true);
             } else {
                 setStatus("error");
             }
@@ -355,6 +383,62 @@ function App() {
                                 닫기
                             </button>
                         </div>
+                    </div>
+                </div>
+            )}
+            {showTrustModal && (
+                <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center p-4 z-50">
+                    <div className="bg-white rounded-2xl shadow-2xl p-6 w-full max-w-sm animate-[fadeIn_.15s_ease-out]">
+                        <div className="flex items-start justify-between mb-4">
+                            <div className="flex items-center gap-2">
+                                <div className="inline-flex items-center justify-center w-8 h-8 rounded-full bg-gradient-to-r from-blue-500 to-purple-600 text-white shadow">
+                                    <svg className="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M13 16h-1v-4h-1m1-4h.01M12 2a10 10 0 100 20 10 10 0 000-20z" />
+                                    </svg>
+                                </div>
+                                <h3 className="text-base font-semibold text-gray-900">평소에 AI를 얼마나 신뢰하시나요?</h3>
+                            </div>
+                            <button type="button" onClick={() => setShowTrustModal(false)} className="text-gray-400 hover:text-gray-600 transition-colors" aria-label="신뢰도 모달 닫기">
+                                <svg className="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12" />
+                                </svg>
+                            </button>
+                        </div>
+                        <p className="text-sm text-gray-600 mb-5">1(전혀 아님) ~ 5(매우 신뢰) 중에서 선택해주세요.</p>
+                        <div className="flex items-center justify-between gap-2 mb-5">
+                            {[1, 2, 3, 4, 5].map((n) => (
+                                <button
+                                    key={n}
+                                    type="button"
+                                    onClick={() => handleTrustSelect(n)}
+                                    className={`w-11 h-11 rounded-full border text-sm font-semibold transition-all focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-offset-2 ${
+                                        trustScore === n ? "bg-blue-600 text-white border-blue-600 shadow" : "bg-white text-gray-800 border-gray-300 hover:bg-blue-50"
+                                    }`}
+                                    aria-label={`신뢰도 ${n}점 선택`}
+                                >
+                                    {n}
+                                </button>
+                            ))}
+                        </div>
+                        <button type="button" onClick={() => setShowTrustModal(false)} className="w-full py-2.5 rounded-lg bg-gray-100 text-gray-700 hover:bg-gray-200 transition-colors text-sm">
+                            잠시 후에 답할게요
+                        </button>
+                    </div>
+                </div>
+            )}
+            {showThanksModal && (
+                <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center p-4 z-50">
+                    <div className="bg-white rounded-2xl shadow-2xl p-6 w-full max-w-sm animate-[fadeIn_.15s_ease-out] text-center">
+                        <div className="inline-flex items-center justify-center w-12 h-12 rounded-full bg-green-500 text-white mb-3 shadow">
+                            <svg className="w-6 h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                            </svg>
+                        </div>
+                        <h3 className="text-base font-semibold text-gray-900 mb-1">감사합니다!</h3>
+                        <p className="text-sm text-gray-600 mb-5">소중한 의견이 서비스 개선에 큰 도움이 됩니다.</p>
+                        <button type="button" onClick={() => setShowThanksModal(false)} className="w-full py-2.5 rounded-lg bg-gray-100 text-gray-700 hover:bg-gray-200 transition-colors text-sm">
+                            닫기
+                        </button>
                     </div>
                 </div>
             )}
