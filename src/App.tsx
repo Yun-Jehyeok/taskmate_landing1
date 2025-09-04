@@ -204,7 +204,7 @@ function App() {
                 </div>
 
                 {/* Pricing Selection */}
-                <div className="bg-white rounded-2xl shadow-xl p-4 mb-6 border border-gray-100">
+                {/* <div className="bg-white rounded-2xl shadow-xl p-4 mb-6 border border-gray-100">
                     <h2 className="text-base font-semibold text-gray-800 mb-3 text-center">피드백 유형 선택</h2>
                     <div className="grid grid-cols-1 gap-3">
                         <button
@@ -235,7 +235,7 @@ function App() {
                             </div>
                         </button>
                     </div>
-                </div>
+                </div> */}
 
                 {/* Submit Button */}
                 <div className="bg-white rounded-2xl shadow-xl p-6 border border-gray-100">
