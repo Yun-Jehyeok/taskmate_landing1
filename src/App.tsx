@@ -5,7 +5,8 @@ const FORMSPREE_URL = import.meta.env.VITE_FORMSPREE_URL;
 function App() {
     const [status, setStatus] = useState("");
     const [isSubmitting, setIsSubmitting] = useState(false);
-    const [feedbackType, setFeedbackType] = useState<"free" | "premium">("free");
+    const feedbackType = "free";
+    // const [feedbackType, setFeedbackType] = useState<"free" | "premium">("free");
     const [showExampleModal, setShowExampleModal] = useState(false);
     const [formData, setFormData] = useState({
         github: "",
@@ -180,7 +181,7 @@ function App() {
                                 </svg>
                                 <div>
                                     <p className="text-sm text-green-800">제출 완료! 제출해주신 이메일로 최대한 빠른 피드백을 드릴게요!</p>
-                                    {feedbackType === "premium" && <p className="text-xs text-green-700 mt-1">💡 시범운영 중으로 실제 결제는 진행되지 않습니다.</p>}
+                                    {/* {feedbackType === "premium" && <p className="text-xs text-green-700 mt-1">💡 시범운영 중으로 실제 결제는 진행되지 않습니다.</p>} */}
                                 </div>
                             </div>
                         </div>
