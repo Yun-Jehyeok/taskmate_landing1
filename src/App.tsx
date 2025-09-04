@@ -6,6 +6,7 @@ function App() {
     const [status, setStatus] = useState("");
     const [isSubmitting, setIsSubmitting] = useState(false);
     const [feedbackType, setFeedbackType] = useState<"free" | "premium">("free");
+    const [showExampleModal, setShowExampleModal] = useState(false);
     const [formData, setFormData] = useState({
         github: "",
         content: "",
@@ -73,6 +74,18 @@ function App() {
 
                 {/* Form */}
                 <div className="bg-white rounded-2xl shadow-xl p-6 md:p-8 border border-gray-100 mb-6">
+                    <div className="flex justify-end mb-4">
+                        <button
+                            type="button"
+                            onClick={() => setShowExampleModal(true)}
+                            className="inline-flex items-center px-3 py-2 text-sm font-medium text-blue-600 bg-blue-50 rounded-lg hover:bg-blue-100 transition-colors"
+                        >
+                            <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                            </svg>
+                            예시 보기
+                        </button>
+                    </div>
                     <form onSubmit={handleSubmit} className="space-y-6">
                         {/* GitHub URL Input */}
                         <div className="space-y-2">
@@ -244,6 +257,106 @@ function App() {
                     <p className="text-sm text-gray-500">제출해주신 이메일은 피드백 및 서비스 안내 외의 목적으로 사용되지 않습니다.</p>
                 </div>
             </div>
+
+            {/* Example Modal */}
+            {showExampleModal && (
+                <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
+                    <div className="bg-white rounded-2xl shadow-xl p-6 md:p-8 max-w-2xl w-full max-h-[90vh] overflow-y-auto">
+                        <div className="flex items-center justify-between mb-6">
+                            <h2 className="text-2xl font-bold text-gray-800">예시 보기</h2>
+                            <button onClick={() => setShowExampleModal(false)} className="text-gray-400 hover:text-gray-600 transition-colors">
+                                <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                                </svg>
+                            </button>
+                        </div>
+
+                        <div className="space-y-6">
+                            <div className="space-y-2">
+                                <label className="block text-sm font-medium text-gray-700">GitHub 저장소 주소 (Public)</label>
+                                <div className="p-3 bg-gray-50 rounded-lg border border-gray-200">
+                                    <p className="text-gray-800 break-all overflow-hidden">https://github.com/example/my-project</p>
+                                </div>
+                            </div>
+
+                            <div className="space-y-2">
+                                <label className="block text-sm font-medium text-gray-700">피드백 받고 싶은 내용</label>
+                                <div className="p-3 bg-gray-50 rounded-lg border border-gray-200">
+                                    <p className="text-gray-800 break-words overflow-hidden">
+                                        현재 TypeScript 프로젝트의 타입 안전성과 코드 품질에 대한 피드백을 받고 싶습니다. 특히 tsconfig.json 설정, any 타입 사용, ESLint 규칙 등에서 개선이 필요한
+                                        부분이 있는지 확인해주세요.
+                                    </p>
+                                </div>
+                            </div>
+
+                            <div className="space-y-2">
+                                <label className="block text-sm font-medium text-gray-700">이메일 주소</label>
+                                <div className="p-3 bg-gray-50 rounded-lg border border-gray-200">
+                                    <p className="text-gray-800 break-all overflow-hidden">example@email.com</p>
+                                </div>
+                            </div>
+
+                            <div className="space-y-2">
+                                <label className="block text-sm font-medium text-gray-700">방문 경로</label>
+                                <div className="p-3 bg-gray-50 rounded-lg border border-gray-200">
+                                    <p className="text-gray-800 break-words overflow-hidden">SNS</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div className="mt-8 pt-6 border-t border-gray-200">
+                            <h3 className="text-lg font-semibold text-gray-800 mb-4">📝 AI 피드백 예시</h3>
+                            <div className="bg-gradient-to-r from-blue-50 to-purple-50 rounded-lg p-4 border border-blue-200">
+                                <div className="space-y-4">
+                                    <div>
+                                        <h4 className="font-medium text-gray-800 mb-2">🚨 심각한 문제점들</h4>
+                                        <div className="space-y-3">
+                                            <div className="bg-red-50 p-3 rounded-lg border border-red-200">
+                                                <h5 className="font-medium text-red-800 mb-1">1. TypeScript 설정이 너무 느슨함</h5>
+                                                <p className="text-xs text-red-700 mb-2">tsconfig.json</p>
+                                                <code className="text-xs bg-red-100 p-1 rounded block mb-2 break-all overflow-hidden">"strict": false, "noImplicitAny": false</code>
+                                                <ul className="text-xs text-red-700 space-y-1">
+                                                    <li>• strict: false와 noImplicitAny: false로 설정되어 있어 TypeScript의 타입 안전성 장점을 거의 활용하지 못함</li>
+                                                    <li>• 런타임 에러를 컴파일 타임에 잡을 수 없음</li>
+                                                </ul>
+                                            </div>
+
+                                            <div className="bg-red-50 p-3 rounded-lg border border-red-200">
+                                                <h5 className="font-medium text-red-800 mb-1">2. 과도한 any 타입 사용</h5>
+                                                <p className="text-xs text-red-700 mb-2">api.ts</p>
+                                                <code className="text-xs bg-red-100 p-1 rounded block mb-2 break-all overflow-hidden">
+                                                    get: (url: string, config?: any) =&gt; api.get(url, config).then((res: any) =&gt; res.data)
+                                                </code>
+                                                <ul className="text-xs text-red-700 space-y-1">
+                                                    <li>• API 응답 타입이 any로 되어 있어 타입 안전성 부족</li>
+                                                    <li>• 컴포넌트 props에서도 any 타입 사용</li>
+                                                </ul>
+                                            </div>
+
+                                            <div className="bg-red-50 p-3 rounded-lg border border-red-200">
+                                                <h5 className="font-medium text-red-800 mb-1">3. ESLint 규칙이 너무 느슨함</h5>
+                                                <p className="text-xs text-red-700 mb-2">eslint.config.mjs</p>
+                                                <code className="text-xs bg-red-100 p-1 rounded block mb-2 break-all overflow-hidden">
+                                                    "@typescript-eslint/no-explicit-any": "off", "@typescript-eslint/no-unused-vars": "off"
+                                                </code>
+                                                <ul className="text-xs text-red-700 space-y-1">
+                                                    <li>• 중요한 타입 체크와 사용하지 않는 변수 경고를 모두 비활성화</li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div className="mt-6 flex justify-end">
+                            <button onClick={() => setShowExampleModal(false)} className="px-4 py-2 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200 transition-colors">
+                                닫기
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            )}
         </div>
     );
 }
